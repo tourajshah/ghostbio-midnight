@@ -53,7 +53,7 @@ Web3 networking presents a glaring paradox:
 +─────────────────────────────────────────────────────────────────────────+
 │                           GHOSTBIO FRONTEND                             │
 │                  (React + Vite + Spatial 3D Card UI)                    │
-│    👤 Visitor View        │    👑 Owner Control Desk  │  🎪 Organizer   │
+│    👤 Visitor View      │   👑 Owner Control Desk  │   🎪 Organizer    │
 +────────────────────────────────────┬────────────────────────────────────+
                                      │
                                      v
