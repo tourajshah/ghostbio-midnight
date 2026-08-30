@@ -1,10 +1,6 @@
 import { ledger, type Ledger, type Contract } from '@midnight-ntwrk/bboard-contract';
 import { type FinalizedCallTxData } from '@midnight-ntwrk/midnight-js-contracts';
-import {
-  type GhostCardContract,
-  type GhostCardProviders,
-  type ProfileState,
-} from './common-types.js';
+import { type GhostCardContract, type GhostCardProviders, type ProfileState } from './common-types.js';
 
 export * from './common-types.js';
 
@@ -14,8 +10,8 @@ export * from './common-types.js';
 export class GhostCardAPI {
   constructor(
     public readonly contract: GhostCardContract,
-    private readonly providers: GhostCardProviders
-  ) { }
+    private readonly providers: GhostCardProviders,
+  ) {}
 
   /**
    * Reads public ledger state directly from the Midnight network indexer.
@@ -45,7 +41,7 @@ export class GhostCardAPI {
    */
   async toggleAccepting(
     ownerSecret: Uint8Array,
-    newState: boolean
+    newState: boolean,
   ): Promise<FinalizedCallTxData<Contract, 'toggleAccepting'>> {
     return await this.contract.callTx.toggleAccepting(ownerSecret, newState);
   }
@@ -55,7 +51,7 @@ export class GhostCardAPI {
    */
   async setRequiredBadgeHash(
     ownerSecret: Uint8Array,
-    newHash: Uint8Array
+    newHash: Uint8Array,
   ): Promise<FinalizedCallTxData<Contract, 'setRequiredBadgeHash'>> {
     return await this.contract.callTx.setRequiredBadgeHash(ownerSecret, newHash);
   }
@@ -63,9 +59,7 @@ export class GhostCardAPI {
   /**
    * Visitor: Prove valid event badge ownership in ZK without exposing key or identity.
    */
-  async verifyAccess(
-    visitorSecret: Uint8Array
-  ): Promise<FinalizedCallTxData<Contract, 'verifyAccess'>> {
+  async verifyAccess(visitorSecret: Uint8Array): Promise<FinalizedCallTxData<Contract, 'verifyAccess'>> {
     return await this.contract.callTx.verifyAccess(visitorSecret);
   }
 }

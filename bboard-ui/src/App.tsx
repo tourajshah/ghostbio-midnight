@@ -75,16 +75,48 @@ export const App: React.FC<AppProps> = ({ api }) => {
 
   // Owner Desk Inbox
   const [connectionRequests, setConnectionRequests] = useState<ConnectionRequest[]>([
-    { id: '1', visitorHandle: '@satoshi_zk', timestamp: '10 mins ago', proofTier: 'VIP Investor Pass', status: 'PENDING', note: 'Interested in seed funding your GhostBio protocol.' },
-    { id: '2', visitorHandle: '@vitalik_m', timestamp: '1 hour ago', proofTier: 'Speaker Pass', status: 'ACCEPTED', note: 'Let us discuss Compact circuit optimization.' },
+    {
+      id: '1',
+      visitorHandle: '@satoshi_zk',
+      timestamp: '10 mins ago',
+      proofTier: 'VIP Investor Pass',
+      status: 'PENDING',
+      note: 'Interested in seed funding your GhostBio protocol.',
+    },
+    {
+      id: '2',
+      visitorHandle: '@vitalik_m',
+      timestamp: '1 hour ago',
+      proofTier: 'Speaker Pass',
+      status: 'ACCEPTED',
+      note: 'Let us discuss Compact circuit optimization.',
+    },
   ]);
 
   // Dynamic Profile Links List
   const [links, setLinks] = useState<LinkItem[]>([
     { id: '1', title: 'GitHub Repository', urlOrContent: 'https://github.com/ghostbio', isGated: false, icon: '💻' },
     { id: '2', title: 'X / Twitter Profile', urlOrContent: 'https://x.com/ahmet_midnight', isGated: false, icon: '🐦' },
-    { id: '3', title: 'Direct Signal Contact', urlOrContent: 'https://signal.me/#p/+15550192834', isGated: true, requiredTier: 'general', description: 'Private channel for verified attendees.', icon: '💬', ephemeralPolicy: 'Event-Bound Ephemeral' },
-    { id: '4', title: 'Confidential Pitch Deck', urlOrContent: 'https://ghostbio.me/docs/pitch-deck-2026.pdf', isGated: true, requiredTier: 'vip', description: 'Financial projections & roadmap.', icon: '📊', ephemeralPolicy: 'Auto-Revokes at Event End' },
+    {
+      id: '3',
+      title: 'Direct Signal Contact',
+      urlOrContent: 'https://signal.me/#p/+15550192834',
+      isGated: true,
+      requiredTier: 'general',
+      description: 'Private channel for verified attendees.',
+      icon: '💬',
+      ephemeralPolicy: 'Event-Bound Ephemeral',
+    },
+    {
+      id: '4',
+      title: 'Confidential Pitch Deck',
+      urlOrContent: 'https://ghostbio.me/docs/pitch-deck-2026.pdf',
+      isGated: true,
+      requiredTier: 'vip',
+      description: 'Financial projections & roadmap.',
+      icon: '📊',
+      ephemeralPolicy: 'Auto-Revokes at Event End',
+    },
   ]);
 
   // Owner Link Editing State
@@ -118,8 +150,20 @@ export const App: React.FC<AppProps> = ({ api }) => {
 
   // Real-Time Anonymous ZK Audit Logs
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>([
-    { id: '1', timestamp: '13:12:05', event: 'ZK Access: Direct Signal Contact', status: 'SUCCESS', tierUsed: 'General Pass' },
-    { id: '2', timestamp: '12:58:04', event: 'Key Rotation Executed by Owner', status: 'REVOKED', tierUsed: 'Owner Key' },
+    {
+      id: '1',
+      timestamp: '13:12:05',
+      event: 'ZK Access: Direct Signal Contact',
+      status: 'SUCCESS',
+      tierUsed: 'General Pass',
+    },
+    {
+      id: '2',
+      timestamp: '12:58:04',
+      event: 'Key Rotation Executed by Owner',
+      status: 'REVOKED',
+      tierUsed: 'Owner Key',
+    },
   ]);
 
   // 3D Card Hover Perspective Effect
@@ -169,7 +213,9 @@ export const App: React.FC<AppProps> = ({ api }) => {
       });
       setUnlockedLinks(newUnlocked);
       if (Object.keys(newUnlocked).length > 0) {
-        setVisitorStatus(`✓ ZK Proof Verified locally on Midnight. ${Object.keys(newUnlocked).length} secret link(s) unlocked.`);
+        setVisitorStatus(
+          `✓ ZK Proof Verified locally on Midnight. ${Object.keys(newUnlocked).length} secret link(s) unlocked.`,
+        );
       }
     };
 
@@ -296,16 +342,16 @@ export const App: React.FC<AppProps> = ({ api }) => {
       links.map((l) =>
         l.id === id
           ? {
-            ...l,
-            title: editTitle,
-            urlOrContent: editUrl,
-            isGated: editIsGated,
-            requiredTier: editIsGated ? editTier : undefined,
-            description: editIsGated ? `Gated for ${editTier.toUpperCase()} pass holders.` : undefined,
-            ephemeralPolicy: editPolicy,
-          }
-          : l
-      )
+              ...l,
+              title: editTitle,
+              urlOrContent: editUrl,
+              isGated: editIsGated,
+              requiredTier: editIsGated ? editTier : undefined,
+              description: editIsGated ? `Gated for ${editTier.toUpperCase()} pass holders.` : undefined,
+              ephemeralPolicy: editPolicy,
+            }
+          : l,
+      ),
     );
     setEditingLinkId(null);
     setOwnerStatus('Link updated successfully.');
@@ -318,17 +364,13 @@ export const App: React.FC<AppProps> = ({ api }) => {
 
   // Connection Inbox Handling
   const handleAcceptConnection = (id: string) => {
-    setConnectionRequests(
-      connectionRequests.map((req) => (req.id === id ? { ...req, status: 'ACCEPTED' } : req))
-    );
+    setConnectionRequests(connectionRequests.map((req) => (req.id === id ? { ...req, status: 'ACCEPTED' } : req)));
     setConnectionState('CONNECTED');
     setOwnerStatus('ZK Connection Accepted! Details revealed to visitor.');
   };
 
   const handleDeclineConnection = (id: string) => {
-    setConnectionRequests(
-      connectionRequests.map((req) => (req.id === id ? { ...req, status: 'DECLINED' } : req))
-    );
+    setConnectionRequests(connectionRequests.map((req) => (req.id === id ? { ...req, status: 'DECLINED' } : req)));
     setConnectionState('REJECTED');
     setOwnerStatus('ZK Connection Declined.');
   };
@@ -365,15 +407,25 @@ export const App: React.FC<AppProps> = ({ api }) => {
       eventTag: `ETHDenver 2026 ${upgradeTier.toUpperCase()}`,
     }));
     setActiveBadgeKey(organizerPassKey);
-    setOrganizerStatus(`Success: Upgraded user '@${targetHandle.replace('@', '')}' to [${upgradeTier.toUpperCase()}] tier on Midnight Event Registry.`);
+    setOrganizerStatus(
+      `Success: Upgraded user '@${targetHandle.replace('@', '')}' to [${upgradeTier.toUpperCase()}] tier on Midnight Event Registry.`,
+    );
   };
 
   const handleEndEventBatchRevoke = () => {
     setEventActive(false);
     setUnlockedLinks({});
-    setOrganizerStatus('🚨 EVENT SESSION ENDED: Executed on-chain key rotation. All 1,250 attendee pass keys revoked in ZK!');
+    setOrganizerStatus(
+      '🚨 EVENT SESSION ENDED: Executed on-chain key rotation. All 1,250 attendee pass keys revoked in ZK!',
+    );
     setAuditLogs((prev) => [
-      { id: Date.now().toString(), timestamp: new Date().toLocaleTimeString(), event: 'Organizer Global Pass Revocation', status: 'REVOKED', tierUsed: 'Organizer Master Key' },
+      {
+        id: Date.now().toString(),
+        timestamp: new Date().toLocaleTimeString(),
+        event: 'Organizer Global Pass Revocation',
+        status: 'REVOKED',
+        tierUsed: 'Organizer Master Key',
+      },
       ...prev,
     ]);
   };
@@ -389,8 +441,17 @@ export const App: React.FC<AppProps> = ({ api }) => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', width: '100vw', backgroundColor: '#030508', color: '#f8fafc', fontFamily: 'system-ui, -apple-system, sans-serif', boxSizing: 'border-box', overflowX: 'hidden' }}>
-
+    <div
+      style={{
+        minHeight: '100vh',
+        width: '100vw',
+        backgroundColor: '#030508',
+        color: '#f8fafc',
+        fontFamily: 'system-ui, -apple-system, sans-serif',
+        boxSizing: 'border-box',
+        overflowX: 'hidden',
+      }}
+    >
       {/* Global CSS Reset Injection */}
       <style>{`
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -401,43 +462,156 @@ export const App: React.FC<AppProps> = ({ api }) => {
       `}</style>
 
       {/* Radial Background Aura */}
-      <div style={{ position: 'fixed', top: 0, left: '50%', transform: 'translateX(-50%)', width: '1400px', height: '500px', background: 'radial-gradient(circle at 50% 0%, rgba(124, 58, 237, 0.2), rgba(99, 102, 241, 0.08) 45%, transparent 80%)', pointerEvents: 'none', zIndex: 0 }} />
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '1400px',
+          height: '500px',
+          background:
+            'radial-gradient(circle at 50% 0%, rgba(124, 58, 237, 0.2), rgba(99, 102, 241, 0.08) 45%, transparent 80%)',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      />
 
       {/* Top Floating Glass Navigation Header */}
-      <header style={{ position: 'relative', zIndex: 10, maxWidth: '1280px', margin: '0 auto', padding: '24px 24px 0' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 28px', backgroundColor: 'rgba(11, 15, 23, 0.85)', borderRadius: '24px', backdropFilter: 'blur(24px)', border: '1px solid rgba(255, 255, 255, 0.08)', boxShadow: '0 20px 50px -15px rgba(0,0,0,0.8)' }}>
+      <header
+        style={{ position: 'relative', zIndex: 10, maxWidth: '1280px', margin: '0 auto', padding: '24px 24px 0' }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '16px 28px',
+            backgroundColor: 'rgba(11, 15, 23, 0.85)',
+            borderRadius: '24px',
+            backdropFilter: 'blur(24px)',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            boxShadow: '0 20px 50px -15px rgba(0,0,0,0.8)',
+          }}
+        >
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-            <div style={{ width: '46px', height: '46px', borderRadius: '14px', background: 'linear-gradient(135deg, #6366f1, #a855f7, #ec4899)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '26px', boxShadow: '0 0 30px rgba(168, 85, 247, 0.45)' }}>
+            <div
+              style={{
+                width: '46px',
+                height: '46px',
+                borderRadius: '14px',
+                background: 'linear-gradient(135deg, #6366f1, #a855f7, #ec4899)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '26px',
+                boxShadow: '0 0 30px rgba(168, 85, 247, 0.45)',
+              }}
+            >
               👻
             </div>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span style={{ fontSize: '22px', fontWeight: '900', letterSpacing: '-0.03em', background: 'linear-gradient(90deg, #fff, #c084fc, #818cf8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                <span
+                  style={{
+                    fontSize: '22px',
+                    fontWeight: '900',
+                    letterSpacing: '-0.03em',
+                    background: 'linear-gradient(90deg, #fff, #c084fc, #818cf8)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                  }}
+                >
                   GHOSTBIO
                 </span>
-                <span style={{ fontSize: '10px', padding: '3px 10px', borderRadius: '20px', backgroundColor: 'rgba(16, 185, 129, 0.15)', color: '#34d399', border: '1px solid rgba(52, 211, 153, 0.3)', fontWeight: 'bold' }}>
+                <span
+                  style={{
+                    fontSize: '10px',
+                    padding: '3px 10px',
+                    borderRadius: '20px',
+                    backgroundColor: 'rgba(16, 185, 129, 0.15)',
+                    color: '#34d399',
+                    border: '1px solid rgba(52, 211, 153, 0.3)',
+                    fontWeight: 'bold',
+                  }}
+                >
                   MIDNIGHT ZK NATIVE
                 </span>
               </div>
-              <p style={{ margin: 0, fontSize: '12px', color: '#94a3b8' }}>Zero-Knowledge Selective Disclosure Protocol</p>
+              <p style={{ margin: 0, fontSize: '12px', color: '#94a3b8' }}>
+                Zero-Knowledge Selective Disclosure Protocol
+              </p>
             </div>
           </div>
 
           {/* Navigation Role Tabs */}
-          <div style={{ display: 'flex', gap: '6px', backgroundColor: '#070a10', padding: '6px', borderRadius: '16px', border: '1px solid #1e293b' }}>
+          <div
+            style={{
+              display: 'flex',
+              gap: '6px',
+              backgroundColor: '#070a10',
+              padding: '6px',
+              borderRadius: '16px',
+              border: '1px solid #1e293b',
+            }}
+          >
             <button
               onClick={() => setActiveRole('visitor')}
-              style={{ padding: '9px 20px', borderRadius: '12px', border: 'none', backgroundColor: activeRole === 'visitor' ? '#7c3aed' : 'transparent', color: activeRole === 'visitor' ? '#fff' : '#94a3b8', cursor: 'pointer', fontWeight: 'bold', fontSize: '12px' }}>
+              style={{
+                padding: '9px 20px',
+                borderRadius: '12px',
+                border: 'none',
+                backgroundColor: activeRole === 'visitor' ? '#7c3aed' : 'transparent',
+                color: activeRole === 'visitor' ? '#fff' : '#94a3b8',
+                cursor: 'pointer',
+                fontWeight: 'bold',
+                fontSize: '12px',
+              }}
+            >
               👤 Visitor Profile Card
             </button>
             <button
               onClick={() => setActiveRole('owner')}
-              style={{ padding: '9px 20px', borderRadius: '12px', border: 'none', backgroundColor: activeRole === 'owner' ? '#2563eb' : 'transparent', color: activeRole === 'owner' ? '#fff' : '#94a3b8', cursor: 'pointer', fontWeight: 'bold', fontSize: '12px' }}>
-              👑 Owner Control Desk {connectionRequests.filter((r) => r.status === 'PENDING').length > 0 && <span style={{ marginLeft: '6px', padding: '2px 7px', borderRadius: '10px', backgroundColor: '#ec4899', color: '#fff', fontSize: '10px' }}>{connectionRequests.filter((r) => r.status === 'PENDING').length}</span>}
+              style={{
+                padding: '9px 20px',
+                borderRadius: '12px',
+                border: 'none',
+                backgroundColor: activeRole === 'owner' ? '#2563eb' : 'transparent',
+                color: activeRole === 'owner' ? '#fff' : '#94a3b8',
+                cursor: 'pointer',
+                fontWeight: 'bold',
+                fontSize: '12px',
+              }}
+            >
+              👑 Owner Control Desk{' '}
+              {connectionRequests.filter((r) => r.status === 'PENDING').length > 0 && (
+                <span
+                  style={{
+                    marginLeft: '6px',
+                    padding: '2px 7px',
+                    borderRadius: '10px',
+                    backgroundColor: '#ec4899',
+                    color: '#fff',
+                    fontSize: '10px',
+                  }}
+                >
+                  {connectionRequests.filter((r) => r.status === 'PENDING').length}
+                </span>
+              )}
             </button>
             <button
               onClick={() => setActiveRole('organizer')}
-              style={{ padding: '9px 20px', borderRadius: '12px', border: 'none', backgroundColor: activeRole === 'organizer' ? '#059669' : 'transparent', color: activeRole === 'organizer' ? '#fff' : '#94a3b8', cursor: 'pointer', fontWeight: 'bold', fontSize: '12px' }}>
+              style={{
+                padding: '9px 20px',
+                borderRadius: '12px',
+                border: 'none',
+                backgroundColor: activeRole === 'organizer' ? '#059669' : 'transparent',
+                color: activeRole === 'organizer' ? '#fff' : '#94a3b8',
+                cursor: 'pointer',
+                fontWeight: 'bold',
+                fontSize: '12px',
+              }}
+            >
               🎪 Organizer Terminal
             </button>
           </div>
@@ -445,14 +619,14 @@ export const App: React.FC<AppProps> = ({ api }) => {
       </header>
 
       {/* Main Container */}
-      <main style={{ position: 'relative', zIndex: 1, maxWidth: '1280px', margin: '32px auto', padding: '0 24px 48px' }}>
-
+      <main
+        style={{ position: 'relative', zIndex: 1, maxWidth: '1280px', margin: '32px auto', padding: '0 24px 48px' }}
+      >
         {/* ========================================================================= */}
         {/* PAGE 1: VISITOR CARD VIEW                                                 */}
         {/* ========================================================================= */}
         {activeRole === 'visitor' && (
           <div style={{ display: 'grid', gridTemplateColumns: '420px 1fr', gap: '36px', alignItems: 'start' }}>
-
             {/* Left Column: 3D Holographic Business Card */}
             <div style={{ position: 'sticky', top: '24px' }}>
               <div
@@ -465,36 +639,102 @@ export const App: React.FC<AppProps> = ({ api }) => {
                   backdropFilter: 'blur(30px)',
                   borderRadius: '32px',
                   padding: '36px 30px',
-                  border: profile?.isAcceptingIntros && eventActive ? '1px solid rgba(192, 132, 252, 0.45)' : '1px solid rgba(239, 68, 68, 0.45)',
-                  boxShadow: profile?.isAcceptingIntros && eventActive ? '0 30px 70px -20px rgba(124, 58, 237, 0.35), inset 0 1px 0 rgba(255,255,255,0.25)' : '0 30px 70px -20px rgba(239, 68, 68, 0.35)',
+                  border:
+                    profile?.isAcceptingIntros && eventActive
+                      ? '1px solid rgba(192, 132, 252, 0.45)'
+                      : '1px solid rgba(239, 68, 68, 0.45)',
+                  boxShadow:
+                    profile?.isAcceptingIntros && eventActive
+                      ? '0 30px 70px -20px rgba(124, 58, 237, 0.35), inset 0 1px 0 rgba(255,255,255,0.25)'
+                      : '0 30px 70px -20px rgba(239, 68, 68, 0.35)',
                   position: 'relative',
                   overflow: 'hidden',
-                }}>
-
+                }}
+              >
                 {/* Status Indicator Bar */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '28px' }}>
-                  <span style={{ fontSize: '10px', fontWeight: 'bold', color: '#c084fc', letterSpacing: '0.15em' }}>GHOSTBIO • PERSONAL CARD</span>
-                  <span style={{ padding: '4px 14px', borderRadius: '20px', fontSize: '11px', fontWeight: 'bold', backgroundColor: profile?.isAcceptingIntros && eventActive ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)', color: profile?.isAcceptingIntros && eventActive ? '#34d399' : '#f87171', border: `1px solid ${profile?.isAcceptingIntros && eventActive ? 'rgba(16, 185, 129, 0.4)' : 'rgba(239, 68, 68, 0.4)'}` }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: '28px',
+                  }}
+                >
+                  <span style={{ fontSize: '10px', fontWeight: 'bold', color: '#c084fc', letterSpacing: '0.15em' }}>
+                    GHOSTBIO • PERSONAL CARD
+                  </span>
+                  <span
+                    style={{
+                      padding: '4px 14px',
+                      borderRadius: '20px',
+                      fontSize: '11px',
+                      fontWeight: 'bold',
+                      backgroundColor:
+                        profile?.isAcceptingIntros && eventActive
+                          ? 'rgba(16, 185, 129, 0.15)'
+                          : 'rgba(239, 68, 68, 0.15)',
+                      color: profile?.isAcceptingIntros && eventActive ? '#34d399' : '#f87171',
+                      border: `1px solid ${profile?.isAcceptingIntros && eventActive ? 'rgba(16, 185, 129, 0.4)' : 'rgba(239, 68, 68, 0.4)'}`,
+                    }}
+                  >
                     {profile?.isAcceptingIntros && eventActive ? '● ACTIVE & ONLINE' : '○ OFF-AIR'}
                   </span>
                 </div>
 
                 {/* Profile Avatar & Identity */}
                 <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-                  <div style={{ width: '90px', height: '90px', borderRadius: '50%', background: 'linear-gradient(135deg, #6366f1, #a855f7, #ec4899)', margin: '0 auto 18px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '42px', boxShadow: '0 0 35px rgba(168, 85, 247, 0.55)', border: '3px solid rgba(255,255,255,0.3)' }}>
+                  <div
+                    style={{
+                      width: '90px',
+                      height: '90px',
+                      borderRadius: '50%',
+                      background: 'linear-gradient(135deg, #6366f1, #a855f7, #ec4899)',
+                      margin: '0 auto 18px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '42px',
+                      boxShadow: '0 0 35px rgba(168, 85, 247, 0.55)',
+                      border: '3px solid rgba(255,255,255,0.3)',
+                    }}
+                  >
                     {profileData.avatarEmoji}
                   </div>
-                  <h2 style={{ margin: '0 0 4px', fontSize: '26px', fontWeight: 'bold', color: '#fff' }}>{profileData.name}</h2>
+                  <h2 style={{ margin: '0 0 4px', fontSize: '26px', fontWeight: 'bold', color: '#fff' }}>
+                    {profileData.name}
+                  </h2>
                   <p style={{ margin: '0 0 10px', fontSize: '14px', color: '#a7f3d0' }}>@{profileData.handle}</p>
-                  <p style={{ margin: '0 0 18px', fontSize: '13px', color: '#94a3b8', lineHeight: '1.6' }}>{profileData.bio}</p>
+                  <p style={{ margin: '0 0 18px', fontSize: '13px', color: '#94a3b8', lineHeight: '1.6' }}>
+                    {profileData.bio}
+                  </p>
 
                   <div style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
-                    <span style={{ padding: '6px 14px', borderRadius: '20px', backgroundColor: 'rgba(99, 102, 241, 0.2)', color: '#c084fc', fontSize: '12px', fontWeight: 'bold', border: '1px solid rgba(192, 132, 252, 0.3)' }}>
+                    <span
+                      style={{
+                        padding: '6px 14px',
+                        borderRadius: '20px',
+                        backgroundColor: 'rgba(99, 102, 241, 0.2)',
+                        color: '#c084fc',
+                        fontSize: '12px',
+                        fontWeight: 'bold',
+                        border: '1px solid rgba(192, 132, 252, 0.3)',
+                      }}
+                    >
                       🎟️ {profileData.eventTag}
                     </span>
                     <button
                       onClick={() => setShowQrModal(true)}
-                      style={{ padding: '6px 12px', borderRadius: '20px', backgroundColor: '#1e293b', border: '1px solid #334155', color: '#fff', fontSize: '12px', cursor: 'pointer', fontWeight: 'bold' }}>
+                      style={{
+                        padding: '6px 12px',
+                        borderRadius: '20px',
+                        backgroundColor: '#1e293b',
+                        border: '1px solid #334155',
+                        color: '#fff',
+                        fontSize: '12px',
+                        cursor: 'pointer',
+                        fontWeight: 'bold',
+                      }}
+                    >
                       📱 Scan QR
                     </button>
                   </div>
@@ -506,25 +746,76 @@ export const App: React.FC<AppProps> = ({ api }) => {
                     <button
                       onClick={() => setShowConnectModal(true)}
                       disabled={!profile?.isAcceptingIntros || !eventActive}
-                      style={{ width: '100%', padding: '14px', borderRadius: '14px', border: 'none', backgroundColor: '#2563eb', color: '#fff', fontSize: '13px', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 0 20px rgba(37, 99, 235, 0.4)' }}>
+                      style={{
+                        width: '100%',
+                        padding: '14px',
+                        borderRadius: '14px',
+                        border: 'none',
+                        backgroundColor: '#2563eb',
+                        color: '#fff',
+                        fontSize: '13px',
+                        fontWeight: 'bold',
+                        cursor: 'pointer',
+                        boxShadow: '0 0 20px rgba(37, 99, 235, 0.4)',
+                      }}
+                    >
                       🤝 Send ZK Connection Request
                     </button>
                   )}
 
                   {connectionState === 'PENDING' && (
-                    <button disabled style={{ width: '100%', padding: '14px', borderRadius: '14px', border: '1px solid #3b82f6', backgroundColor: 'rgba(59, 130, 246, 0.15)', color: '#93c5fd', fontSize: '13px', fontWeight: 'bold', cursor: 'not-allowed' }}>
+                    <button
+                      disabled
+                      style={{
+                        width: '100%',
+                        padding: '14px',
+                        borderRadius: '14px',
+                        border: '1px solid #3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.15)',
+                        color: '#93c5fd',
+                        fontSize: '13px',
+                        fontWeight: 'bold',
+                        cursor: 'not-allowed',
+                      }}
+                    >
                       ⏳ Connection Request Pending...
                     </button>
                   )}
 
                   {connectionState === 'CONNECTED' && (
-                    <button disabled style={{ width: '100%', padding: '14px', borderRadius: '14px', border: '1px solid #10b981', backgroundColor: 'rgba(16, 185, 129, 0.15)', color: '#34d399', fontSize: '13px', fontWeight: 'bold', cursor: 'default' }}>
+                    <button
+                      disabled
+                      style={{
+                        width: '100%',
+                        padding: '14px',
+                        borderRadius: '14px',
+                        border: '1px solid #10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.15)',
+                        color: '#34d399',
+                        fontSize: '13px',
+                        fontWeight: 'bold',
+                        cursor: 'default',
+                      }}
+                    >
                       ✓ Connected with Ahmet
                     </button>
                   )}
 
                   {connectionState === 'REJECTED' && (
-                    <button onClick={() => setShowConnectModal(true)} style={{ width: '100%', padding: '14px', borderRadius: '14px', border: 'none', backgroundColor: '#dc2626', color: '#fff', fontSize: '13px', fontWeight: 'bold', cursor: 'pointer' }}>
+                    <button
+                      onClick={() => setShowConnectModal(true)}
+                      style={{
+                        width: '100%',
+                        padding: '14px',
+                        borderRadius: '14px',
+                        border: 'none',
+                        backgroundColor: '#dc2626',
+                        color: '#fff',
+                        fontSize: '13px',
+                        fontWeight: 'bold',
+                        cursor: 'pointer',
+                      }}
+                    >
                       ↺ Request Declined - Try Again
                     </button>
                   )}
@@ -532,24 +823,80 @@ export const App: React.FC<AppProps> = ({ api }) => {
               </div>
 
               {/* Preset Pass Key Selector */}
-              <div style={{ marginTop: '20px', backgroundColor: '#0b0f17', padding: '20px', borderRadius: '20px', border: '1px solid #1e293b' }}>
-                <span style={{ fontSize: '11px', color: '#94a3b8', fontWeight: 'bold', textTransform: 'uppercase', display: 'block', marginBottom: '12px' }}>
+              <div
+                style={{
+                  marginTop: '20px',
+                  backgroundColor: '#0b0f17',
+                  padding: '20px',
+                  borderRadius: '20px',
+                  border: '1px solid #1e293b',
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: '11px',
+                    color: '#94a3b8',
+                    fontWeight: 'bold',
+                    textTransform: 'uppercase',
+                    display: 'block',
+                    marginBottom: '12px',
+                  }}
+                >
                   Select Pass Key Tier (Demo Presets):
                 </span>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                   <button
-                    onClick={() => { setSelectedTier('general'); setVisitorPassKey('ETH_DENVER_GENERAL'); }}
-                    style={{ padding: '10px 14px', borderRadius: '10px', border: selectedTier === 'general' ? '1px solid #818cf8' : '1px solid #1e293b', backgroundColor: selectedTier === 'general' ? 'rgba(99, 102, 241, 0.2)' : '#030508', color: '#fff', fontSize: '12px', textAlign: 'left', cursor: 'pointer' }}>
+                    onClick={() => {
+                      setSelectedTier('general');
+                      setVisitorPassKey('ETH_DENVER_GENERAL');
+                    }}
+                    style={{
+                      padding: '10px 14px',
+                      borderRadius: '10px',
+                      border: selectedTier === 'general' ? '1px solid #818cf8' : '1px solid #1e293b',
+                      backgroundColor: selectedTier === 'general' ? 'rgba(99, 102, 241, 0.2)' : '#030508',
+                      color: '#fff',
+                      fontSize: '12px',
+                      textAlign: 'left',
+                      cursor: 'pointer',
+                    }}
+                  >
                     🎟️ General Pass Key: <code style={{ color: '#a7f3d0' }}>ETH_DENVER_GENERAL</code>
                   </button>
                   <button
-                    onClick={() => { setSelectedTier('vip'); setVisitorPassKey('ETH_DENVER_VIP'); }}
-                    style={{ padding: '10px 14px', borderRadius: '10px', border: selectedTier === 'vip' ? '1px solid #c084fc' : '1px solid #1e293b', backgroundColor: selectedTier === 'vip' ? 'rgba(192, 132, 252, 0.2)' : '#030508', color: '#fff', fontSize: '12px', textAlign: 'left', cursor: 'pointer' }}>
+                    onClick={() => {
+                      setSelectedTier('vip');
+                      setVisitorPassKey('ETH_DENVER_VIP');
+                    }}
+                    style={{
+                      padding: '10px 14px',
+                      borderRadius: '10px',
+                      border: selectedTier === 'vip' ? '1px solid #c084fc' : '1px solid #1e293b',
+                      backgroundColor: selectedTier === 'vip' ? 'rgba(192, 132, 252, 0.2)' : '#030508',
+                      color: '#fff',
+                      fontSize: '12px',
+                      textAlign: 'left',
+                      cursor: 'pointer',
+                    }}
+                  >
                     ⭐ VIP Investor Pass Key: <code style={{ color: '#fef08a' }}>ETH_DENVER_VIP</code>
                   </button>
                   <button
-                    onClick={() => { setSelectedTier('speaker'); setVisitorPassKey('ETH_DENVER_SPEAKER'); }}
-                    style={{ padding: '10px 14px', borderRadius: '10px', border: selectedTier === 'speaker' ? '1px solid #34d399' : '1px solid #1e293b', backgroundColor: selectedTier === 'speaker' ? 'rgba(52, 211, 153, 0.2)' : '#030508', color: '#fff', fontSize: '12px', textAlign: 'left', cursor: 'pointer' }}>
+                    onClick={() => {
+                      setSelectedTier('speaker');
+                      setVisitorPassKey('ETH_DENVER_SPEAKER');
+                    }}
+                    style={{
+                      padding: '10px 14px',
+                      borderRadius: '10px',
+                      border: selectedTier === 'speaker' ? '1px solid #34d399' : '1px solid #1e293b',
+                      backgroundColor: selectedTier === 'speaker' ? 'rgba(52, 211, 153, 0.2)' : '#030508',
+                      color: '#fff',
+                      fontSize: '12px',
+                      textAlign: 'left',
+                      cursor: 'pointer',
+                    }}
+                  >
                     🎙️ Speaker / VIP Key: <code style={{ color: '#6ee7b7' }}>ETH_DENVER_SPEAKER</code>
                   </button>
                 </div>
@@ -560,17 +907,41 @@ export const App: React.FC<AppProps> = ({ api }) => {
             <div>
               {!profile?.isAcceptingIntros || !eventActive ? (
                 /* OFF-AIR / EVENT CLOSED BLACKOUT BANNER */
-                <div style={{ backgroundColor: 'rgba(239, 68, 68, 0.08)', border: '1px solid #ef4444', borderRadius: '28px', padding: '56px', textAlign: 'center' }}>
+                <div
+                  style={{
+                    backgroundColor: 'rgba(239, 68, 68, 0.08)',
+                    border: '1px solid #ef4444',
+                    borderRadius: '28px',
+                    padding: '56px',
+                    textAlign: 'center',
+                  }}
+                >
                   <div style={{ fontSize: '64px', marginBottom: '18px' }}>🚫</div>
                   <h2 style={{ margin: '0 0 10px', color: '#f87171', fontSize: '28px' }}>
                     {!eventActive ? 'Event Session Revoked by Organizer' : 'Profile Is Currently Off-Air'}
                   </h2>
-                  <p style={{ color: '#cbd5e1', fontSize: '15px', maxWidth: '480px', margin: '0 auto 24px', lineHeight: '1.6' }}>
+                  <p
+                    style={{
+                      color: '#cbd5e1',
+                      fontSize: '15px',
+                      maxWidth: '480px',
+                      margin: '0 auto 24px',
+                      lineHeight: '1.6',
+                    }}
+                  >
                     {!eventActive
                       ? 'The event session has ended. The organizer executed global key rotation on Midnight, revoking all pass access.'
                       : 'The profile owner activated hard deactivation on the Midnight ledger. Public and gated links are locked.'}
                   </p>
-                  <span style={{ fontSize: '12px', color: '#fca5a5', backgroundColor: '#450a0a', padding: '8px 18px', borderRadius: '20px' }}>
+                  <span
+                    style={{
+                      fontSize: '12px',
+                      color: '#fca5a5',
+                      backgroundColor: '#450a0a',
+                      padding: '8px 18px',
+                      borderRadius: '20px',
+                    }}
+                  >
                     On-Chain State: {!eventActive ? 'eventActive = false' : 'isAcceptingIntros = false'}
                   </span>
                 </div>
@@ -578,27 +949,81 @@ export const App: React.FC<AppProps> = ({ api }) => {
                 <>
                   {/* Public Links */}
                   <div style={{ marginBottom: '36px' }}>
-                    <h3 style={{ fontSize: '12px', textTransform: 'uppercase', color: '#94a3b8', letterSpacing: '0.1em', marginBottom: '16px', fontWeight: 'bold' }}>
+                    <h3
+                      style={{
+                        fontSize: '12px',
+                        textTransform: 'uppercase',
+                        color: '#94a3b8',
+                        letterSpacing: '0.1em',
+                        marginBottom: '16px',
+                        fontWeight: 'bold',
+                      }}
+                    >
                       🌐 Public Links
                     </h3>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
-                      {links.filter((l) => !l.isGated).map((link) => (
-                        <a key={link.id} href={link.urlOrContent} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '18px 22px', backgroundColor: '#0b0f17', borderRadius: '16px', color: '#fff', textDecoration: 'none', border: '1px solid #1e293b', fontWeight: 'bold', fontSize: '14px' }}>
-                          <span style={{ fontSize: '20px' }}>{link.icon}</span> <span>{link.title}</span>
-                        </a>
-                      ))}
+                      {links
+                        .filter((l) => !l.isGated)
+                        .map((link) => (
+                          <a
+                            key={link.id}
+                            href={link.urlOrContent}
+                            target="_blank"
+                            rel="noreferrer"
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '14px',
+                              padding: '18px 22px',
+                              backgroundColor: '#0b0f17',
+                              borderRadius: '16px',
+                              color: '#fff',
+                              textDecoration: 'none',
+                              border: '1px solid #1e293b',
+                              fontWeight: 'bold',
+                              fontSize: '14px',
+                            }}
+                          >
+                            <span style={{ fontSize: '20px' }}>{link.icon}</span> <span>{link.title}</span>
+                          </a>
+                        ))}
                     </div>
                   </div>
 
                   {/* ZK Gated Links */}
                   <div>
-                    <h3 style={{ fontSize: '12px', textTransform: 'uppercase', color: '#c084fc', letterSpacing: '0.1em', marginBottom: '16px', fontWeight: 'bold' }}>
+                    <h3
+                      style={{
+                        fontSize: '12px',
+                        textTransform: 'uppercase',
+                        color: '#c084fc',
+                        letterSpacing: '0.1em',
+                        marginBottom: '16px',
+                        fontWeight: 'bold',
+                      }}
+                    >
                       🔒 Zero-Knowledge Selective-Disclosure Links
                     </h3>
 
                     {/* Pass Secret Key Input Bar */}
-                    <div style={{ backgroundColor: '#0b0f17', padding: '22px', borderRadius: '20px', marginBottom: '22px', border: '1px solid rgba(192, 132, 252, 0.35)' }}>
-                      <label style={{ display: 'block', fontSize: '12px', color: '#cbd5e1', marginBottom: '8px', fontWeight: 'bold' }}>
+                    <div
+                      style={{
+                        backgroundColor: '#0b0f17',
+                        padding: '22px',
+                        borderRadius: '20px',
+                        marginBottom: '22px',
+                        border: '1px solid rgba(192, 132, 252, 0.35)',
+                      }}
+                    >
+                      <label
+                        style={{
+                          display: 'block',
+                          fontSize: '12px',
+                          color: '#cbd5e1',
+                          marginBottom: '8px',
+                          fontWeight: 'bold',
+                        }}
+                      >
                         Your Event Pass Secret (Evaluated locally via ZK proof server):
                       </label>
                       <input
@@ -606,62 +1031,142 @@ export const App: React.FC<AppProps> = ({ api }) => {
                         value={visitorPassKey}
                         onChange={(e) => setVisitorPassKey(e.target.value)}
                         placeholder="Enter Event Badge Secret"
-                        style={{ width: '100%', padding: '14px 18px', borderRadius: '12px', border: '1px solid #334155', backgroundColor: '#030508', color: '#fff', fontSize: '14px', boxSizing: 'border-box' }}
+                        style={{
+                          width: '100%',
+                          padding: '14px 18px',
+                          borderRadius: '12px',
+                          border: '1px solid #334155',
+                          backgroundColor: '#030508',
+                          color: '#fff',
+                          fontSize: '14px',
+                          boxSizing: 'border-box',
+                        }}
                       />
                     </div>
 
                     {visitorStatus && (
-                      <div style={{ padding: '16px 20px', borderRadius: '16px', marginBottom: '22px', fontSize: '13px', backgroundColor: visitorStatus.includes('Verified') ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)', color: visitorStatus.includes('Verified') ? '#6ee7b7' : '#fca5a5', border: `1px solid ${visitorStatus.includes('Verified') ? '#059669' : '#dc2626'}` }}>
+                      <div
+                        style={{
+                          padding: '16px 20px',
+                          borderRadius: '16px',
+                          marginBottom: '22px',
+                          fontSize: '13px',
+                          backgroundColor: visitorStatus.includes('Verified')
+                            ? 'rgba(16, 185, 129, 0.15)'
+                            : 'rgba(239, 68, 68, 0.15)',
+                          color: visitorStatus.includes('Verified') ? '#6ee7b7' : '#fca5a5',
+                          border: `1px solid ${visitorStatus.includes('Verified') ? '#059669' : '#dc2626'}`,
+                        }}
+                      >
                         {visitorStatus}
                       </div>
                     )}
 
                     {/* Gated Link Cards */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
-                      {links.filter((l) => l.isGated).map((link) => {
-                        const isUnlocked = Boolean(unlockedLinks[link.id]);
-                        return (
-                          <div key={link.id} style={{ backgroundColor: '#0b0f17', padding: '24px 26px', borderRadius: '20px', border: isUnlocked ? '1px solid #10b981' : '1px solid #1e293b', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <div style={{ flex: 1, marginRight: '20px' }}>
-                              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
-                                <span style={{ fontSize: '22px' }}>{link.icon}</span>
-                                <h4 style={{ margin: 0, fontSize: '17px', color: '#fff' }}>{link.title}</h4>
-                              </div>
-                              <p style={{ margin: '0 0 8px', fontSize: '13px', color: '#94a3b8' }}>{link.description}</p>
+                      {links
+                        .filter((l) => l.isGated)
+                        .map((link) => {
+                          const isUnlocked = Boolean(unlockedLinks[link.id]);
+                          return (
+                            <div
+                              key={link.id}
+                              style={{
+                                backgroundColor: '#0b0f17',
+                                padding: '24px 26px',
+                                borderRadius: '20px',
+                                border: isUnlocked ? '1px solid #10b981' : '1px solid #1e293b',
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                              }}
+                            >
+                              <div style={{ flex: 1, marginRight: '20px' }}>
+                                <div
+                                  style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}
+                                >
+                                  <span style={{ fontSize: '22px' }}>{link.icon}</span>
+                                  <h4 style={{ margin: 0, fontSize: '17px', color: '#fff' }}>{link.title}</h4>
+                                </div>
+                                <p style={{ margin: '0 0 8px', fontSize: '13px', color: '#94a3b8' }}>
+                                  {link.description}
+                                </p>
 
-                              <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                                <span style={{ fontSize: '11px', color: '#a7f3d0', backgroundColor: 'rgba(6, 78, 59, 0.6)', padding: '3px 10px', borderRadius: '6px', border: '1px solid rgba(16, 185, 129, 0.3)' }}>
-                                  Tier Gate: {link.requiredTier?.toUpperCase()} PASS
-                                </span>
-                                {link.ephemeralPolicy && (
-                                  <span style={{ fontSize: '11px', color: '#fef08a', backgroundColor: 'rgba(113, 63, 18, 0.6)', padding: '3px 10px', borderRadius: '6px', border: '1px solid rgba(234, 179, 8, 0.3)' }}>
-                                    ⚡ {link.ephemeralPolicy}
+                                <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                                  <span
+                                    style={{
+                                      fontSize: '11px',
+                                      color: '#a7f3d0',
+                                      backgroundColor: 'rgba(6, 78, 59, 0.6)',
+                                      padding: '3px 10px',
+                                      borderRadius: '6px',
+                                      border: '1px solid rgba(16, 185, 129, 0.3)',
+                                    }}
+                                  >
+                                    Tier Gate: {link.requiredTier?.toUpperCase()} PASS
                                   </span>
+                                  {link.ephemeralPolicy && (
+                                    <span
+                                      style={{
+                                        fontSize: '11px',
+                                        color: '#fef08a',
+                                        backgroundColor: 'rgba(113, 63, 18, 0.6)',
+                                        padding: '3px 10px',
+                                        borderRadius: '6px',
+                                        border: '1px solid rgba(234, 179, 8, 0.3)',
+                                      }}
+                                    >
+                                      ⚡ {link.ephemeralPolicy}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+
+                              <div>
+                                {isUnlocked ? (
+                                  <a
+                                    href={unlockedLinks[link.id]}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    style={{
+                                      padding: '14px 24px',
+                                      borderRadius: '14px',
+                                      backgroundColor: '#10b981',
+                                      color: '#fff',
+                                      textDecoration: 'none',
+                                      fontWeight: 'bold',
+                                      fontSize: '13px',
+                                      display: 'inline-block',
+                                      boxShadow: '0 0 25px rgba(16, 185, 129, 0.4)',
+                                    }}
+                                  >
+                                    Open Secret Link 🔓
+                                  </a>
+                                ) : (
+                                  <button
+                                    onClick={() => handleUnlockLink(link)}
+                                    disabled={loading}
+                                    style={{
+                                      padding: '14px 24px',
+                                      borderRadius: '14px',
+                                      border: 'none',
+                                      backgroundColor: '#7c3aed',
+                                      color: '#fff',
+                                      fontWeight: 'bold',
+                                      cursor: 'pointer',
+                                      fontSize: '13px',
+                                      boxShadow: '0 0 25px rgba(124, 58, 237, 0.35)',
+                                    }}
+                                  >
+                                    {provingId === link.id
+                                      ? `Generating ZK (${provingStep}/3)...`
+                                      : 'Generate ZK Proof'}
+                                  </button>
                                 )}
                               </div>
                             </div>
-
-                            <div>
-                              {isUnlocked ? (
-                                <a
-                                  href={unlockedLinks[link.id]}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                  style={{ padding: '14px 24px', borderRadius: '14px', backgroundColor: '#10b981', color: '#fff', textDecoration: 'none', fontWeight: 'bold', fontSize: '13px', display: 'inline-block', boxShadow: '0 0 25px rgba(16, 185, 129, 0.4)' }}>
-                                  Open Secret Link 🔓
-                                </a>
-                              ) : (
-                                <button
-                                  onClick={() => handleUnlockLink(link)}
-                                  disabled={loading}
-                                  style={{ padding: '14px 24px', borderRadius: '14px', border: 'none', backgroundColor: '#7c3aed', color: '#fff', fontWeight: 'bold', cursor: 'pointer', fontSize: '13px', boxShadow: '0 0 25px rgba(124, 58, 237, 0.35)' }}>
-                                  {provingId === link.id ? `Generating ZK (${provingStep}/3)...` : 'Generate ZK Proof'}
-                                </button>
-                              )}
-                            </div>
-                          </div>
-                        );
-                      })}
+                          );
+                        })}
                     </div>
                   </div>
                 </>
@@ -672,41 +1177,156 @@ export const App: React.FC<AppProps> = ({ api }) => {
 
         {/* QR CODE MODAL */}
         {showQrModal && (
-          <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(16px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100 }}>
-            <div style={{ width: '380px', backgroundColor: '#0b0f17', padding: '32px', borderRadius: '24px', border: '1px solid #334155', textAlign: 'center' }}>
+          <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(0,0,0,0.85)',
+              backdropFilter: 'blur(16px)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 100,
+            }}
+          >
+            <div
+              style={{
+                width: '380px',
+                backgroundColor: '#0b0f17',
+                padding: '32px',
+                borderRadius: '24px',
+                border: '1px solid #334155',
+                textAlign: 'center',
+              }}
+            >
               <h3 style={{ margin: '0 0 8px', color: '#fff' }}>📱 GhostBio ZK Card QR</h3>
-              <p style={{ margin: '0 0 20px', fontSize: '12px', color: '#94a3b8' }}>Scan to view profile and prove pass ownership in ZK</p>
+              <p style={{ margin: '0 0 20px', fontSize: '12px', color: '#94a3b8' }}>
+                Scan to view profile and prove pass ownership in ZK
+              </p>
 
-              <div style={{ width: '200px', height: '200px', margin: '0 auto 20px', backgroundColor: '#fff', padding: '16px', borderRadius: '16px', display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '4px' }}>
+              <div
+                style={{
+                  width: '200px',
+                  height: '200px',
+                  margin: '0 auto 20px',
+                  backgroundColor: '#fff',
+                  padding: '16px',
+                  borderRadius: '16px',
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(5, 1fr)',
+                  gap: '4px',
+                }}
+              >
                 {Array.from({ length: 25 }).map((_, i) => (
-                  <div key={i} style={{ backgroundColor: (i % 2 === 0 || i % 5 === 0) ? '#000' : '#818cf8', borderRadius: '2px' }} />
+                  <div
+                    key={i}
+                    style={{ backgroundColor: i % 2 === 0 || i % 5 === 0 ? '#000' : '#818cf8', borderRadius: '2px' }}
+                  />
                 ))}
               </div>
 
-              <button onClick={() => setShowQrModal(false)} style={{ padding: '10px 24px', borderRadius: '10px', border: 'none', backgroundColor: '#2563eb', color: '#fff', fontWeight: 'bold', cursor: 'pointer' }}>Close</button>
+              <button
+                onClick={() => setShowQrModal(false)}
+                style={{
+                  padding: '10px 24px',
+                  borderRadius: '10px',
+                  border: 'none',
+                  backgroundColor: '#2563eb',
+                  color: '#fff',
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
+                }}
+              >
+                Close
+              </button>
             </div>
           </div>
         )}
 
         {/* CONNECTION MODAL */}
         {showConnectModal && (
-          <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(16px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100 }}>
-            <div style={{ width: '480px', backgroundColor: '#0b0f17', padding: '32px', borderRadius: '24px', border: '1px solid #334155', boxShadow: '0 30px 60px rgba(0,0,0,0.9)' }}>
+          <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(0,0,0,0.85)',
+              backdropFilter: 'blur(16px)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 100,
+            }}
+          >
+            <div
+              style={{
+                width: '480px',
+                backgroundColor: '#0b0f17',
+                padding: '32px',
+                borderRadius: '24px',
+                border: '1px solid #334155',
+                boxShadow: '0 30px 60px rgba(0,0,0,0.9)',
+              }}
+            >
               <h3 style={{ margin: '0 0 8px', fontSize: '20px', color: '#fff' }}>🤝 Send ZK Connection Request</h3>
               <p style={{ margin: '0 0 20px', fontSize: '13px', color: '#94a3b8', lineHeight: '1.5' }}>
-                Midnight proves your valid event pass ownership in ZK. Ahmet will receive your connection request without revealing your wallet identity.
+                Midnight proves your valid event pass ownership in ZK. Ahmet will receive your connection request
+                without revealing your wallet identity.
               </p>
 
               <textarea
                 value={connectNote}
                 onChange={(e) => setConnectNote(e.target.value)}
                 rows={4}
-                style={{ width: '100%', padding: '12px', borderRadius: '12px', border: '1px solid #334155', backgroundColor: '#030508', color: '#fff', fontSize: '13px', boxSizing: 'border-box', marginBottom: '20px' }}
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  borderRadius: '12px',
+                  border: '1px solid #334155',
+                  backgroundColor: '#030508',
+                  color: '#fff',
+                  fontSize: '13px',
+                  boxSizing: 'border-box',
+                  marginBottom: '20px',
+                }}
               />
 
               <div style={{ display: 'flex', gap: '12px' }}>
-                <button onClick={() => setShowConnectModal(false)} style={{ flex: 1, padding: '12px', borderRadius: '12px', border: '1px solid #334155', backgroundColor: 'transparent', color: '#fff', fontWeight: 'bold', cursor: 'pointer' }}>Cancel</button>
-                <button onClick={handleSendConnectionRequest} style={{ flex: 1, padding: '12px', borderRadius: '12px', border: 'none', backgroundColor: '#2563eb', color: '#fff', fontWeight: 'bold', cursor: 'pointer' }}>Send ZK Request</button>
+                <button
+                  onClick={() => setShowConnectModal(false)}
+                  style={{
+                    flex: 1,
+                    padding: '12px',
+                    borderRadius: '12px',
+                    border: '1px solid #334155',
+                    backgroundColor: 'transparent',
+                    color: '#fff',
+                    fontWeight: 'bold',
+                    cursor: 'pointer',
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSendConnectionRequest}
+                  style={{
+                    flex: 1,
+                    padding: '12px',
+                    borderRadius: '12px',
+                    border: 'none',
+                    backgroundColor: '#2563eb',
+                    color: '#fff',
+                    fontWeight: 'bold',
+                    cursor: 'pointer',
+                  }}
+                >
+                  Send ZK Request
+                </button>
               </div>
             </div>
           </div>
@@ -717,49 +1337,156 @@ export const App: React.FC<AppProps> = ({ api }) => {
         {/* ========================================================================= */}
         {activeRole === 'owner' && (
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 400px', gap: '36px' }}>
-
-            <div style={{ backgroundColor: '#0b0f17', padding: '36px', borderRadius: '28px', border: '1px solid #1e293b' }}>
-              <h2 style={{ margin: '0 0 8px', fontSize: '24px', color: '#60a5fa' }}>👑 Profile Owner Security & Management Desk</h2>
-              <p style={{ margin: '0 0 28px', fontSize: '14px', color: '#94a3b8' }}>Customize bio, process connection requests, and manage link ephemerality.</p>
+            <div
+              style={{ backgroundColor: '#0b0f17', padding: '36px', borderRadius: '28px', border: '1px solid #1e293b' }}
+            >
+              <h2 style={{ margin: '0 0 8px', fontSize: '24px', color: '#60a5fa' }}>
+                👑 Profile Owner Security & Management Desk
+              </h2>
+              <p style={{ margin: '0 0 28px', fontSize: '14px', color: '#94a3b8' }}>
+                Customize bio, process connection requests, and manage link ephemerality.
+              </p>
 
               {/* Owner Analytics & Privacy Score Widget */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '14px', marginBottom: '32px' }}>
-                <div style={{ padding: '18px', borderRadius: '16px', backgroundColor: '#030508', border: '1px solid #1e293b' }}>
+              <div
+                style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '14px', marginBottom: '32px' }}
+              >
+                <div
+                  style={{
+                    padding: '18px',
+                    borderRadius: '16px',
+                    backgroundColor: '#030508',
+                    border: '1px solid #1e293b',
+                  }}
+                >
                   <span style={{ fontSize: '11px', color: '#94a3b8', textTransform: 'uppercase' }}>Privacy Score</span>
                   <p style={{ margin: '4px 0 0', fontSize: '24px', fontWeight: 'bold', color: '#34d399' }}>100% ZK</p>
                 </div>
-                <div style={{ padding: '18px', borderRadius: '16px', backgroundColor: '#030508', border: '1px solid #1e293b' }}>
+                <div
+                  style={{
+                    padding: '18px',
+                    borderRadius: '16px',
+                    backgroundColor: '#030508',
+                    border: '1px solid #1e293b',
+                  }}
+                >
                   <span style={{ fontSize: '11px', color: '#94a3b8', textTransform: 'uppercase' }}>ZK Unlocks</span>
                   <p style={{ margin: '4px 0 0', fontSize: '24px', fontWeight: 'bold', color: '#c084fc' }}>148</p>
                 </div>
-                <div style={{ padding: '18px', borderRadius: '16px', backgroundColor: '#030508', border: '1px solid #1e293b' }}>
+                <div
+                  style={{
+                    padding: '18px',
+                    borderRadius: '16px',
+                    backgroundColor: '#030508',
+                    border: '1px solid #1e293b',
+                  }}
+                >
                   <span style={{ fontSize: '11px', color: '#94a3b8', textTransform: 'uppercase' }}>Connections</span>
-                  <p style={{ margin: '4px 0 0', fontSize: '24px', fontWeight: 'bold', color: '#60a5fa' }}>{connectionRequests.filter((r) => r.status === 'ACCEPTED').length}</p>
+                  <p style={{ margin: '4px 0 0', fontSize: '24px', fontWeight: 'bold', color: '#60a5fa' }}>
+                    {connectionRequests.filter((r) => r.status === 'ACCEPTED').length}
+                  </p>
                 </div>
               </div>
 
               {/* Connection Requests Inbox */}
-              <div style={{ backgroundColor: '#030508', padding: '24px', borderRadius: '20px', border: '1px solid rgba(37, 99, 235, 0.4)', marginBottom: '32px' }}>
-                <h3 style={{ margin: '0 0 16px', fontSize: '16px', color: '#93c5fd', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  📬 ZK Connection Requests Inbox ({connectionRequests.filter((r) => r.status === 'PENDING').length} Pending)
+              <div
+                style={{
+                  backgroundColor: '#030508',
+                  padding: '24px',
+                  borderRadius: '20px',
+                  border: '1px solid rgba(37, 99, 235, 0.4)',
+                  marginBottom: '32px',
+                }}
+              >
+                <h3
+                  style={{
+                    margin: '0 0 16px',
+                    fontSize: '16px',
+                    color: '#93c5fd',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                  }}
+                >
+                  📬 ZK Connection Requests Inbox ({connectionRequests.filter((r) => r.status === 'PENDING').length}{' '}
+                  Pending)
                 </h3>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                   {connectionRequests.map((req) => (
-                    <div key={req.id} style={{ padding: '16px', borderRadius: '14px', backgroundColor: '#0b0f17', border: '1px solid #1e293b' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                    <div
+                      key={req.id}
+                      style={{
+                        padding: '16px',
+                        borderRadius: '14px',
+                        backgroundColor: '#0b0f17',
+                        border: '1px solid #1e293b',
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          marginBottom: '6px',
+                        }}
+                      >
                         <span style={{ fontWeight: 'bold', fontSize: '14px', color: '#fff' }}>{req.visitorHandle}</span>
-                        <span style={{ fontSize: '11px', color: '#a7f3d0', backgroundColor: '#064e3b', padding: '2px 8px', borderRadius: '6px' }}>{req.proofTier}</span>
+                        <span
+                          style={{
+                            fontSize: '11px',
+                            color: '#a7f3d0',
+                            backgroundColor: '#064e3b',
+                            padding: '2px 8px',
+                            borderRadius: '6px',
+                          }}
+                        >
+                          {req.proofTier}
+                        </span>
                       </div>
                       <p style={{ margin: '0 0 12px', fontSize: '13px', color: '#94a3b8' }}>"{req.note}"</p>
 
                       {req.status === 'PENDING' ? (
                         <div style={{ display: 'flex', gap: '10px' }}>
-                          <button onClick={() => handleAcceptConnection(req.id)} style={{ padding: '8px 16px', borderRadius: '8px', border: 'none', backgroundColor: '#059669', color: '#fff', fontSize: '12px', fontWeight: 'bold', cursor: 'pointer' }}>Accept Connection</button>
-                          <button onClick={() => handleDeclineConnection(req.id)} style={{ padding: '8px 16px', borderRadius: '8px', border: 'none', backgroundColor: '#dc2626', color: '#fff', fontSize: '12px', fontWeight: 'bold', cursor: 'pointer' }}>Decline</button>
+                          <button
+                            onClick={() => handleAcceptConnection(req.id)}
+                            style={{
+                              padding: '8px 16px',
+                              borderRadius: '8px',
+                              border: 'none',
+                              backgroundColor: '#059669',
+                              color: '#fff',
+                              fontSize: '12px',
+                              fontWeight: 'bold',
+                              cursor: 'pointer',
+                            }}
+                          >
+                            Accept Connection
+                          </button>
+                          <button
+                            onClick={() => handleDeclineConnection(req.id)}
+                            style={{
+                              padding: '8px 16px',
+                              borderRadius: '8px',
+                              border: 'none',
+                              backgroundColor: '#dc2626',
+                              color: '#fff',
+                              fontSize: '12px',
+                              fontWeight: 'bold',
+                              cursor: 'pointer',
+                            }}
+                          >
+                            Decline
+                          </button>
                         </div>
                       ) : (
-                        <span style={{ fontSize: '12px', fontWeight: 'bold', color: req.status === 'ACCEPTED' ? '#34d399' : '#f87171' }}>
+                        <span
+                          style={{
+                            fontSize: '12px',
+                            fontWeight: 'bold',
+                            color: req.status === 'ACCEPTED' ? '#34d399' : '#f87171',
+                          }}
+                        >
                           Status: {req.status}
                         </span>
                       )}
@@ -769,46 +1496,148 @@ export const App: React.FC<AppProps> = ({ api }) => {
               </div>
 
               {/* Physical Event Passes */}
-              <div style={{ backgroundColor: '#030508', padding: '24px', borderRadius: '20px', border: '1px solid rgba(52, 211, 153, 0.4)', marginBottom: '32px' }}>
-                <h3 style={{ margin: '0 0 8px', fontSize: '16px', color: '#34d399' }}>🎟️ My Event Access Passes & Venue Door Gates</h3>
+              <div
+                style={{
+                  backgroundColor: '#030508',
+                  padding: '24px',
+                  borderRadius: '20px',
+                  border: '1px solid rgba(52, 211, 153, 0.4)',
+                  marginBottom: '32px',
+                }}
+              >
+                <h3 style={{ margin: '0 0 8px', fontSize: '16px', color: '#34d399' }}>
+                  🎟️ My Event Access Passes & Venue Door Gates
+                </h3>
                 <p style={{ margin: '0 0 16px', fontSize: '13px', color: '#94a3b8' }}>
-                  Your issued event pass tier: <strong>{profileData.userPassTier.toUpperCase()}</strong>. Use pass key to unlock physical venue door gates.
+                  Your issued event pass tier: <strong>{profileData.userPassTier.toUpperCase()}</strong>. Use pass key
+                  to unlock physical venue door gates.
                 </p>
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', backgroundColor: '#0b0f17', borderRadius: '12px', border: '1px solid #1e293b' }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    padding: '16px',
+                    backgroundColor: '#0b0f17',
+                    borderRadius: '12px',
+                    border: '1px solid #1e293b',
+                  }}
+                >
                   <div>
                     <h4 style={{ margin: '0 0 4px', fontSize: '15px' }}>ETH Denver VIP Speaker Lounge Gate</h4>
-                    <p style={{ margin: 0, fontSize: '12px', color: '#94a3b8' }}>Physical door lock nullifier key verification</p>
+                    <p style={{ margin: 0, fontSize: '12px', color: '#94a3b8' }}>
+                      Physical door lock nullifier key verification
+                    </p>
                   </div>
-                  <button onClick={handleUnlockVenueGate} style={{ padding: '10px 18px', borderRadius: '10px', border: 'none', backgroundColor: '#059669', color: '#fff', fontWeight: 'bold', fontSize: '12px', cursor: 'pointer' }}>
+                  <button
+                    onClick={handleUnlockVenueGate}
+                    style={{
+                      padding: '10px 18px',
+                      borderRadius: '10px',
+                      border: 'none',
+                      backgroundColor: '#059669',
+                      color: '#fff',
+                      fontWeight: 'bold',
+                      fontSize: '12px',
+                      cursor: 'pointer',
+                    }}
+                  >
                     Verify & Unlock Door
                   </button>
                 </div>
 
                 {roomGateCode && (
-                  <div style={{ marginTop: '14px', padding: '12px', borderRadius: '10px', backgroundColor: roomGateUnlocked ? '#064e3b' : '#450a0a', color: roomGateUnlocked ? '#34d399' : '#fca5a5', fontSize: '13px', fontWeight: 'bold' }}>
+                  <div
+                    style={{
+                      marginTop: '14px',
+                      padding: '12px',
+                      borderRadius: '10px',
+                      backgroundColor: roomGateUnlocked ? '#064e3b' : '#450a0a',
+                      color: roomGateUnlocked ? '#34d399' : '#fca5a5',
+                      fontSize: '13px',
+                      fontWeight: 'bold',
+                    }}
+                  >
                     {roomGateCode}
                   </div>
                 )}
               </div>
 
               {/* Profile Links CRUD */}
-              <div style={{ backgroundColor: '#030508', padding: '24px', borderRadius: '20px', border: '1px solid #1e293b' }}>
+              <div
+                style={{
+                  backgroundColor: '#030508',
+                  padding: '24px',
+                  borderRadius: '20px',
+                  border: '1px solid #1e293b',
+                }}
+              >
                 <h3 style={{ margin: '0 0 16px', fontSize: '16px', color: '#c084fc' }}>+ Add New Profile Link</h3>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
-                  <input type="text" placeholder="Title (e.g., Pitch Deck)" value={newLinkTitle} onChange={(e) => setNewLinkTitle(e.target.value)} style={{ padding: '12px', borderRadius: '10px', border: '1px solid #334155', backgroundColor: '#0b0f17', color: '#fff', fontSize: '13px' }} />
-                  <input type="text" placeholder="URL or Secret Link" value={newLinkUrl} onChange={(e) => setNewLinkUrl(e.target.value)} style={{ padding: '12px', borderRadius: '10px', border: '1px solid #334155', backgroundColor: '#0b0f17', color: '#fff', fontSize: '13px' }} />
+                  <input
+                    type="text"
+                    placeholder="Title (e.g., Pitch Deck)"
+                    value={newLinkTitle}
+                    onChange={(e) => setNewLinkTitle(e.target.value)}
+                    style={{
+                      padding: '12px',
+                      borderRadius: '10px',
+                      border: '1px solid #334155',
+                      backgroundColor: '#0b0f17',
+                      color: '#fff',
+                      fontSize: '13px',
+                    }}
+                  />
+                  <input
+                    type="text"
+                    placeholder="URL or Secret Link"
+                    value={newLinkUrl}
+                    onChange={(e) => setNewLinkUrl(e.target.value)}
+                    style={{
+                      padding: '12px',
+                      borderRadius: '10px',
+                      border: '1px solid #334155',
+                      backgroundColor: '#0b0f17',
+                      color: '#fff',
+                      fontSize: '13px',
+                    }}
+                  />
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '16px' }}>
-                  <label style={{ fontSize: '13px', color: '#cbd5e1', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <input type="checkbox" checked={newLinkIsGated} onChange={(e) => setNewLinkIsGated(e.target.checked)} />
+                  <label
+                    style={{
+                      fontSize: '13px',
+                      color: '#cbd5e1',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={newLinkIsGated}
+                      onChange={(e) => setNewLinkIsGated(e.target.checked)}
+                    />
                     Enable ZK Pass Gate
                   </label>
 
                   {newLinkIsGated && (
-                    <select value={newLinkTier} onChange={(e: any) => setNewLinkTier(e.target.value)} style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid #334155', backgroundColor: '#0b0f17', color: '#fff', fontSize: '12px' }}>
+                    <select
+                      value={newLinkTier}
+                      onChange={(e: any) => setNewLinkTier(e.target.value)}
+                      style={{
+                        padding: '8px 12px',
+                        borderRadius: '8px',
+                        border: '1px solid #334155',
+                        backgroundColor: '#0b0f17',
+                        color: '#fff',
+                        fontSize: '12px',
+                      }}
+                    >
                       <option value="general">General Tier</option>
                       <option value="vip">VIP Tier</option>
                       <option value="speaker">Speaker Tier</option>
@@ -816,33 +1645,103 @@ export const App: React.FC<AppProps> = ({ api }) => {
                   )}
                 </div>
 
-                <button onClick={handleAddLink} style={{ padding: '12px 24px', borderRadius: '10px', border: 'none', backgroundColor: '#2563eb', color: '#fff', fontWeight: 'bold', cursor: 'pointer', fontSize: '13px' }}>
+                <button
+                  onClick={handleAddLink}
+                  style={{
+                    padding: '12px 24px',
+                    borderRadius: '10px',
+                    border: 'none',
+                    backgroundColor: '#2563eb',
+                    color: '#fff',
+                    fontWeight: 'bold',
+                    cursor: 'pointer',
+                    fontSize: '13px',
+                  }}
+                >
                   Publish Link to Profile
                 </button>
               </div>
 
               {/* Active Profile Links List with Inline Editing */}
               <div style={{ marginTop: '28px' }}>
-                <h4 style={{ margin: '0 0 14px', fontSize: '14px', color: '#94a3b8' }}>Active Profile Links ({links.length}):</h4>
+                <h4 style={{ margin: '0 0 14px', fontSize: '14px', color: '#94a3b8' }}>
+                  Active Profile Links ({links.length}):
+                </h4>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                   {links.map((link) => (
-                    <div key={link.id} style={{ padding: '16px', backgroundColor: '#030508', borderRadius: '14px', border: '1px solid #1e293b' }}>
+                    <div
+                      key={link.id}
+                      style={{
+                        padding: '16px',
+                        backgroundColor: '#030508',
+                        borderRadius: '14px',
+                        border: '1px solid #1e293b',
+                      }}
+                    >
                       {editingLinkId === link.id ? (
                         /* INLINE EDIT FORM */
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-                            <input type="text" value={editTitle} onChange={(e) => setEditTitle(e.target.value)} style={{ padding: '8px', borderRadius: '6px', border: '1px solid #334155', backgroundColor: '#0b0f17', color: '#fff', fontSize: '12px' }} />
-                            <input type="text" value={editUrl} onChange={(e) => setEditUrl(e.target.value)} style={{ padding: '8px', borderRadius: '6px', border: '1px solid #334155', backgroundColor: '#0b0f17', color: '#fff', fontSize: '12px' }} />
+                            <input
+                              type="text"
+                              value={editTitle}
+                              onChange={(e) => setEditTitle(e.target.value)}
+                              style={{
+                                padding: '8px',
+                                borderRadius: '6px',
+                                border: '1px solid #334155',
+                                backgroundColor: '#0b0f17',
+                                color: '#fff',
+                                fontSize: '12px',
+                              }}
+                            />
+                            <input
+                              type="text"
+                              value={editUrl}
+                              onChange={(e) => setEditUrl(e.target.value)}
+                              style={{
+                                padding: '8px',
+                                borderRadius: '6px',
+                                border: '1px solid #334155',
+                                backgroundColor: '#0b0f17',
+                                color: '#fff',
+                                fontSize: '12px',
+                              }}
+                            />
                           </div>
 
                           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                            <label style={{ fontSize: '12px', color: '#cbd5e1', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                              <input type="checkbox" checked={editIsGated} onChange={(e) => setEditIsGated(e.target.checked)} />
+                            <label
+                              style={{
+                                fontSize: '12px',
+                                color: '#cbd5e1',
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '6px',
+                              }}
+                            >
+                              <input
+                                type="checkbox"
+                                checked={editIsGated}
+                                onChange={(e) => setEditIsGated(e.target.checked)}
+                              />
                               ZK Gate
                             </label>
 
                             {editIsGated && (
-                              <select value={editTier} onChange={(e: any) => setEditTier(e.target.value)} style={{ padding: '6px 10px', borderRadius: '6px', border: '1px solid #334155', backgroundColor: '#0b0f17', color: '#fff', fontSize: '12px' }}>
+                              <select
+                                value={editTier}
+                                onChange={(e: any) => setEditTier(e.target.value)}
+                                style={{
+                                  padding: '6px 10px',
+                                  borderRadius: '6px',
+                                  border: '1px solid #334155',
+                                  backgroundColor: '#0b0f17',
+                                  color: '#fff',
+                                  fontSize: '12px',
+                                }}
+                              >
                                 <option value="general">General Tier</option>
                                 <option value="vip">VIP Tier</option>
                                 <option value="speaker">Speaker Tier</option>
@@ -851,21 +1750,95 @@ export const App: React.FC<AppProps> = ({ api }) => {
                           </div>
 
                           <div style={{ display: 'flex', gap: '8px' }}>
-                            <button onClick={() => handleSaveEditLink(link.id)} style={{ padding: '6px 14px', borderRadius: '6px', border: 'none', backgroundColor: '#059669', color: '#fff', fontSize: '11px', fontWeight: 'bold', cursor: 'pointer' }}>Save Changes</button>
-                            <button onClick={() => setEditingLinkId(null)} style={{ padding: '6px 14px', borderRadius: '6px', border: '1px solid #334155', backgroundColor: 'transparent', color: '#fff', fontSize: '11px', cursor: 'pointer' }}>Cancel</button>
+                            <button
+                              onClick={() => handleSaveEditLink(link.id)}
+                              style={{
+                                padding: '6px 14px',
+                                borderRadius: '6px',
+                                border: 'none',
+                                backgroundColor: '#059669',
+                                color: '#fff',
+                                fontSize: '11px',
+                                fontWeight: 'bold',
+                                cursor: 'pointer',
+                              }}
+                            >
+                              Save Changes
+                            </button>
+                            <button
+                              onClick={() => setEditingLinkId(null)}
+                              style={{
+                                padding: '6px 14px',
+                                borderRadius: '6px',
+                                border: '1px solid #334155',
+                                backgroundColor: 'transparent',
+                                color: '#fff',
+                                fontSize: '11px',
+                                cursor: 'pointer',
+                              }}
+                            >
+                              Cancel
+                            </button>
                           </div>
                         </div>
                       ) : (
                         /* DISPLAY ROW */
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                           <div>
-                            <span style={{ fontWeight: 'bold', fontSize: '14px', color: '#fff' }}>{link.icon} {link.title}</span>
-                            {link.isGated && <span style={{ marginLeft: '10px', fontSize: '10px', color: '#c084fc', backgroundColor: 'rgba(192, 132, 252, 0.1)', padding: '2px 8px', borderRadius: '6px' }}>Gate: {link.requiredTier?.toUpperCase()}</span>}
-                            {link.ephemeralPolicy && <span style={{ marginLeft: '8px', fontSize: '10px', color: '#fef08a' }}>⚡ {link.ephemeralPolicy}</span>}
+                            <span style={{ fontWeight: 'bold', fontSize: '14px', color: '#fff' }}>
+                              {link.icon} {link.title}
+                            </span>
+                            {link.isGated && (
+                              <span
+                                style={{
+                                  marginLeft: '10px',
+                                  fontSize: '10px',
+                                  color: '#c084fc',
+                                  backgroundColor: 'rgba(192, 132, 252, 0.1)',
+                                  padding: '2px 8px',
+                                  borderRadius: '6px',
+                                }}
+                              >
+                                Gate: {link.requiredTier?.toUpperCase()}
+                              </span>
+                            )}
+                            {link.ephemeralPolicy && (
+                              <span style={{ marginLeft: '8px', fontSize: '10px', color: '#fef08a' }}>
+                                ⚡ {link.ephemeralPolicy}
+                              </span>
+                            )}
                           </div>
                           <div style={{ display: 'flex', gap: '8px' }}>
-                            <button onClick={() => handleStartEditLink(link)} style={{ padding: '6px 12px', borderRadius: '8px', border: '1px solid #334155', backgroundColor: '#1e293b', color: '#fff', fontSize: '11px', cursor: 'pointer', fontWeight: 'bold' }}>Edit</button>
-                            <button onClick={() => handleDeleteLink(link.id)} style={{ padding: '6px 12px', borderRadius: '8px', border: 'none', backgroundColor: '#dc2626', color: '#fff', fontSize: '11px', cursor: 'pointer', fontWeight: 'bold' }}>Delete</button>
+                            <button
+                              onClick={() => handleStartEditLink(link)}
+                              style={{
+                                padding: '6px 12px',
+                                borderRadius: '8px',
+                                border: '1px solid #334155',
+                                backgroundColor: '#1e293b',
+                                color: '#fff',
+                                fontSize: '11px',
+                                cursor: 'pointer',
+                                fontWeight: 'bold',
+                              }}
+                            >
+                              Edit
+                            </button>
+                            <button
+                              onClick={() => handleDeleteLink(link.id)}
+                              style={{
+                                padding: '6px 12px',
+                                borderRadius: '8px',
+                                border: 'none',
+                                backgroundColor: '#dc2626',
+                                color: '#fff',
+                                fontSize: '11px',
+                                cursor: 'pointer',
+                                fontWeight: 'bold',
+                              }}
+                            >
+                              Delete
+                            </button>
                           </div>
                         </div>
                       )}
@@ -876,8 +1849,25 @@ export const App: React.FC<AppProps> = ({ api }) => {
 
               {/* Hard Off-Air Deactivation */}
               <div style={{ borderTop: '1px solid #1e293b', paddingTop: '24px', marginTop: '28px' }}>
-                <button onClick={handleToggleDeactivation} disabled={loading} style={{ width: '100%', padding: '16px', borderRadius: '14px', border: 'none', backgroundColor: profile?.isAcceptingIntros ? '#dc2626' : '#16a34a', color: '#fff', fontWeight: 'bold', cursor: 'pointer', fontSize: '14px', boxShadow: '0 0 20px rgba(220, 38, 38, 0.3)' }}>
-                  {profile?.isAcceptingIntros ? '🚫 Hard Deactivate All Profile Links (Off-Air Blackout Mode)' : '✅ Re-Activate Profile'}
+                <button
+                  onClick={handleToggleDeactivation}
+                  disabled={loading}
+                  style={{
+                    width: '100%',
+                    padding: '16px',
+                    borderRadius: '14px',
+                    border: 'none',
+                    backgroundColor: profile?.isAcceptingIntros ? '#dc2626' : '#16a34a',
+                    color: '#fff',
+                    fontWeight: 'bold',
+                    cursor: 'pointer',
+                    fontSize: '14px',
+                    boxShadow: '0 0 20px rgba(220, 38, 38, 0.3)',
+                  }}
+                >
+                  {profile?.isAcceptingIntros
+                    ? '🚫 Hard Deactivate All Profile Links (Off-Air Blackout Mode)'
+                    : '✅ Re-Activate Profile'}
                 </button>
               </div>
 
@@ -885,18 +1875,32 @@ export const App: React.FC<AppProps> = ({ api }) => {
             </div>
 
             {/* Right Column: Audit Stream */}
-            <div style={{ backgroundColor: '#0b0f17', padding: '28px', borderRadius: '28px', border: '1px solid #1e293b' }}>
+            <div
+              style={{ backgroundColor: '#0b0f17', padding: '28px', borderRadius: '28px', border: '1px solid #1e293b' }}
+            >
               <h3 style={{ margin: '0 0 16px', fontSize: '16px', color: '#c084fc' }}>📊 Anonymous ZK Audit Stream</h3>
               <p style={{ margin: '0 0 20px', fontSize: '12px', color: '#94a3b8', lineHeight: '1.5' }}>
-                Every unlock logs anonymized ZK verification events on Midnight. Zero visitor IPs or wallet addresses are recorded.
+                Every unlock logs anonymized ZK verification events on Midnight. Zero visitor IPs or wallet addresses
+                are recorded.
               </p>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 {auditLogs.map((log) => (
-                  <div key={log.id} style={{ padding: '14px', borderRadius: '12px', backgroundColor: '#030508', border: '1px solid #1e293b', fontSize: '12px' }}>
+                  <div
+                    key={log.id}
+                    style={{
+                      padding: '14px',
+                      borderRadius: '12px',
+                      backgroundColor: '#030508',
+                      border: '1px solid #1e293b',
+                      fontSize: '12px',
+                    }}
+                  >
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
                       <span style={{ color: '#94a3b8' }}>{log.timestamp}</span>
-                      <span style={{ fontWeight: 'bold', color: log.status === 'SUCCESS' ? '#34d399' : '#f87171' }}>{log.status}</span>
+                      <span style={{ fontWeight: 'bold', color: log.status === 'SUCCESS' ? '#34d399' : '#f87171' }}>
+                        {log.status}
+                      </span>
                     </div>
                     <p style={{ margin: '0 0 4px', fontWeight: 'bold', color: '#fff' }}>{log.event}</p>
                     <span style={{ color: '#64748b', fontSize: '10px' }}>Tier: {log.tierUsed}</span>
@@ -911,47 +1915,125 @@ export const App: React.FC<AppProps> = ({ api }) => {
         {/* PAGE 3: ORGANIZER TERMINAL                                               */}
         {/* ========================================================================= */}
         {activeRole === 'organizer' && (
-          <div style={{ backgroundColor: '#0b0f17', padding: '40px', borderRadius: '28px', border: '1px solid #059669' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+          <div
+            style={{ backgroundColor: '#0b0f17', padding: '40px', borderRadius: '28px', border: '1px solid #059669' }}
+          >
+            <div
+              style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}
+            >
               <h2 style={{ margin: 0, fontSize: '24px', color: '#34d399' }}>🎪 GhostRally Event Organizer Terminal</h2>
               <button
                 onClick={handleEndEventBatchRevoke}
-                style={{ padding: '10px 20px', borderRadius: '10px', border: 'none', backgroundColor: '#dc2626', color: '#fff', fontWeight: 'bold', fontSize: '12px', cursor: 'pointer', boxShadow: '0 0 15px rgba(220, 38, 38, 0.4)' }}>
+                style={{
+                  padding: '10px 20px',
+                  borderRadius: '10px',
+                  border: 'none',
+                  backgroundColor: '#dc2626',
+                  color: '#fff',
+                  fontWeight: 'bold',
+                  fontSize: '12px',
+                  cursor: 'pointer',
+                  boxShadow: '0 0 15px rgba(220, 38, 38, 0.4)',
+                }}
+              >
                 🚨 End Event Session & Batch Revoke All Keys
               </button>
             </div>
-            <p style={{ margin: '0 0 28px', fontSize: '14px', color: '#94a3b8' }}>Target specific attendee handles, issue on-chain commitments, and execute post-event pass key revocations.</p>
+            <p style={{ margin: '0 0 28px', fontSize: '14px', color: '#94a3b8' }}>
+              Target specific attendee handles, issue on-chain commitments, and execute post-event pass key revocations.
+            </p>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '18px', marginBottom: '32px' }}>
-              <div style={{ padding: '22px', borderRadius: '18px', backgroundColor: '#030508', border: '1px solid #1e293b' }}>
+              <div
+                style={{
+                  padding: '22px',
+                  borderRadius: '18px',
+                  backgroundColor: '#030508',
+                  border: '1px solid #1e293b',
+                }}
+              >
                 <span style={{ fontSize: '12px', color: '#94a3b8' }}>Issued ZK Passes</span>
                 <p style={{ margin: '4px 0 0', fontSize: '32px', fontWeight: 'bold', color: '#34d399' }}>1,250</p>
               </div>
-              <div style={{ padding: '22px', borderRadius: '18px', backgroundColor: '#030508', border: '1px solid #1e293b' }}>
+              <div
+                style={{
+                  padding: '22px',
+                  borderRadius: '18px',
+                  backgroundColor: '#030508',
+                  border: '1px solid #1e293b',
+                }}
+              >
                 <span style={{ fontSize: '12px', color: '#94a3b8' }}>VIP / Speaker Upgrades</span>
                 <p style={{ margin: '4px 0 0', fontSize: '32px', fontWeight: 'bold', color: '#c084fc' }}>340</p>
               </div>
-              <div style={{ padding: '22px', borderRadius: '18px', backgroundColor: '#030508', border: '1px solid #1e293b' }}>
+              <div
+                style={{
+                  padding: '22px',
+                  borderRadius: '18px',
+                  backgroundColor: '#030508',
+                  border: '1px solid #1e293b',
+                }}
+              >
                 <span style={{ fontSize: '12px', color: '#94a3b8' }}>Event Session Status</span>
-                <p style={{ margin: '4px 0 0', fontSize: '20px', fontWeight: 'bold', color: eventActive ? '#34d399' : '#f87171' }}>
+                <p
+                  style={{
+                    margin: '4px 0 0',
+                    fontSize: '20px',
+                    fontWeight: 'bold',
+                    color: eventActive ? '#34d399' : '#f87171',
+                  }}
+                >
                   {eventActive ? '● SESSION ACTIVE' : '○ EVENT SESSION REVOKED'}
                 </p>
               </div>
             </div>
 
             {/* Targeted Upgrade Form */}
-            <div style={{ backgroundColor: '#030508', padding: '28px', borderRadius: '20px', border: '1px solid #1e293b' }}>
+            <div
+              style={{ backgroundColor: '#030508', padding: '28px', borderRadius: '20px', border: '1px solid #1e293b' }}
+            >
               <h4 style={{ margin: '0 0 18px', fontSize: '17px', color: '#fff' }}>Targeted Attendee Pass Upgrade</h4>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '14px', marginBottom: '20px' }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: '12px', color: '#cbd5e1', marginBottom: '6px' }}>Target Attendee Handle</label>
-                  <input type="text" value={targetHandle} onChange={(e) => setTargetHandle(e.target.value)} style={{ width: '100%', padding: '12px', borderRadius: '10px', border: '1px solid #334155', backgroundColor: '#0b0f17', color: '#fff', fontSize: '13px', boxSizing: 'border-box' }} />
+                  <label style={{ display: 'block', fontSize: '12px', color: '#cbd5e1', marginBottom: '6px' }}>
+                    Target Attendee Handle
+                  </label>
+                  <input
+                    type="text"
+                    value={targetHandle}
+                    onChange={(e) => setTargetHandle(e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '12px',
+                      borderRadius: '10px',
+                      border: '1px solid #334155',
+                      backgroundColor: '#0b0f17',
+                      color: '#fff',
+                      fontSize: '13px',
+                      boxSizing: 'border-box',
+                    }}
+                  />
                 </div>
 
                 <div>
-                  <label style={{ display: 'block', fontSize: '12px', color: '#cbd5e1', marginBottom: '6px' }}>Upgrade Ticket Tier</label>
-                  <select value={upgradeTier} onChange={(e: any) => setUpgradeTier(e.target.value)} style={{ width: '100%', padding: '12px', borderRadius: '10px', border: '1px solid #334155', backgroundColor: '#0b0f17', color: '#fff', fontSize: '13px', boxSizing: 'border-box' }}>
+                  <label style={{ display: 'block', fontSize: '12px', color: '#cbd5e1', marginBottom: '6px' }}>
+                    Upgrade Ticket Tier
+                  </label>
+                  <select
+                    value={upgradeTier}
+                    onChange={(e: any) => setUpgradeTier(e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '12px',
+                      borderRadius: '10px',
+                      border: '1px solid #334155',
+                      backgroundColor: '#0b0f17',
+                      color: '#fff',
+                      fontSize: '13px',
+                      boxSizing: 'border-box',
+                    }}
+                  >
                     <option value="general">General Pass Tier</option>
                     <option value="vip">VIP Investor Pass Tier</option>
                     <option value="speaker">Speaker Pass Tier</option>
@@ -959,16 +2041,47 @@ export const App: React.FC<AppProps> = ({ api }) => {
                 </div>
 
                 <div>
-                  <label style={{ display: 'block', fontSize: '12px', color: '#cbd5e1', marginBottom: '6px' }}>Pass Commitment Secret</label>
-                  <input type="text" value={organizerPassKey} onChange={(e) => setOrganizerPassKey(e.target.value)} style={{ width: '100%', padding: '12px', borderRadius: '10px', border: '1px solid #334155', backgroundColor: '#0b0f17', color: '#fff', fontSize: '13px', boxSizing: 'border-box' }} />
+                  <label style={{ display: 'block', fontSize: '12px', color: '#cbd5e1', marginBottom: '6px' }}>
+                    Pass Commitment Secret
+                  </label>
+                  <input
+                    type="text"
+                    value={organizerPassKey}
+                    onChange={(e) => setOrganizerPassKey(e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '12px',
+                      borderRadius: '10px',
+                      border: '1px solid #334155',
+                      backgroundColor: '#0b0f17',
+                      color: '#fff',
+                      fontSize: '13px',
+                      boxSizing: 'border-box',
+                    }}
+                  />
                 </div>
               </div>
 
-              <button onClick={handleUpgradeUser} style={{ padding: '14px 28px', borderRadius: '12px', border: 'none', backgroundColor: '#059669', color: '#fff', fontWeight: 'bold', cursor: 'pointer', fontSize: '14px', boxShadow: '0 0 20px rgba(5, 150, 105, 0.4)' }}>
+              <button
+                onClick={handleUpgradeUser}
+                style={{
+                  padding: '14px 28px',
+                  borderRadius: '12px',
+                  border: 'none',
+                  backgroundColor: '#059669',
+                  color: '#fff',
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  boxShadow: '0 0 20px rgba(5, 150, 105, 0.4)',
+                }}
+              >
                 Publish Upgrade Commitment to Midnight
               </button>
 
-              {organizerStatus && <p style={{ fontSize: '13px', color: '#6ee7b7', margin: '18px 0 0' }}>{organizerStatus}</p>}
+              {organizerStatus && (
+                <p style={{ fontSize: '13px', color: '#6ee7b7', margin: '18px 0 0' }}>{organizerStatus}</p>
+              )}
             </div>
           </div>
         )}
